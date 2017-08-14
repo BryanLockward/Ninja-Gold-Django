@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  {%if request.session.gold_total%}
+    <h4>Total Gold: {{request.session.gold_total}}</h4>
+  {%endif%}
+  <div class="location">
+    <h3>Farm</h3>
+    <p>(earn 10-20 golds)</p>
+    <form action='/process_money' method='post'>
+      {% csrf_token %}
+      <input type="hidden" name="location" value="1">
+      <input type="submit" value="Find Gold">
+    </form>
+  </div>
+  <div class="location">
+    <h3>Cave</h3>
+    <p>(earn 5-10 golds)</p>
+    <form action='/process_money' method='post'>
+      {% csrf_token %}
+      <input type="hidden" name="location" value="2">
+      <input type="submit" value="Find Gold">
+    </form>
+  </div>
+  <div class="location">
+    <h3>House</h3>
+    <p>(earn 2-5 golds)</p>
+    <form action='/process_money' method='post'>
+      {% csrf_token %}
+      <input type="hidden" name="location" value="3">
+      <input type="submit" value="Find Gold">
+    </form>
+  </div>
+  <div class="location">
+    <h3>Casino</h3>
+    <p>(earn/takes 0-50 golds)</p>
+    <form action='/process_money' method='post'>
+      {% csrf_token %}
+      <input type="hidden" name="location" value="4">
+      <input type="submit" value="Find Gold">
+    </form>
+  </div>
+  <div class="activity">
+    <ul>
+    {%if request.session.ninja%}
+      {%for display in request.session.ninja%}
+        {%if display.gold < 0%}
+          <li>Sorry, you lost {{display.positive}} gold visiting the {{display.location}} @ {{display.created_at}}</li>
+        {%else%}
+          <li>Great! You've gained {{display.gold}} gold visiting the {{display.location}} @ {{display.created_at}}</li>
+        {%endif%}
+      {%endfor%}
+    {%endif%}
+  </ul>
+  </div>
+</body>
+</html>
